@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MediaKit – video, image and network tools</title>
+<meta name="description" content="Convert WMV to MP4, compress video, extract text from images and test your internet speed. Files are processed on your device.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="tools">
+<header class="top">
+  <a class="brand" href="./">
+    <span class="mark" aria-hidden="true">M</span>
+    <span><strong>MediaKit</strong><small>Fast tools that run in your browser</small></span>
+  </a>
+  <div class="modes" role="group" aria-label="Section">
+    <button data-mode="speed" aria-pressed="false">Speed test</button>
+    <button data-mode="tools" aria-pressed="true">All tools</button>
+  </div>
+  <a class="pill" href="https://github.com/YOUR-USERNAME/mediakit">GitHub</a>
+</header>
+
+<main class="layout">
+  <aside>
+    <div class="card info">
+      <span class="badge">Local</span>
+      <h2>Private by design</h2>
+      <p>Your files are processed on this device and never uploaded. Close the tab and nothing is kept.</p>
+      <a class="cta" href="https://github.com/YOUR-USERNAME/mediakit">View source on GitHub</a>
+    </div>
+    <div class="card utils" role="tablist" aria-label="Media tools">
+      <p class="label">Select tool</p>
+      <button role="tab" aria-selected="true" data-panel="convert"><i class="tile t1">MP4</i><span><b>WMV to MP4</b><small>Convert legacy video to a modern format</small></span></button>
+      <button role="tab" aria-selected="false" data-panel="compress"><i class="tile t2">KB</i><span><b>Video compressor</b><small>Reduce size and keep the detail</small></span></button>
+      <button role="tab" aria-selected="false" data-panel="ocr"><i class="tile t3">Aa</i><span><b>Image to text</b><small>Read English and Bangla from images</small></span></button>
+      <button role="tab" aria-selected="false" data-panel="duty"><i class="tile t4">HR</i><span><b>Duty &amp; break time</b><small>Shift length, breaks and overtime</small></span></button>
+    </div>
+  </aside>
+
+  <div class="stage">
+    <section id="convert" class="panel card">
+      <h2>WMV to MP4 converter</h2>
+      <p class="sub">Also handles AVI, MOV, MKV and FLV</p>
+      <label class="drop">
+        <input type="file" accept="video/*,.wmv,.avi,.mkv,.flv" aria-label="Video file">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+        <span class="drop-title">Drag and drop your video here, or <u>browse</u></span>
+        <span class="drop-name">Best for files under 500 MB</span>
+      </label>
+      <button class="go">Convert to MP4</button>
+      <progress max="1" value="0" hidden></progress>
+      <p class="status" role="status"></p>
+      <div class="out"></div>
+    </section>
+
+    <section id="compress" class="panel card" hidden>
+      <h2>Video compressor</h2>
+      <p class="sub">Smaller files for WhatsApp, email and upload limits</p>
+      <label class="drop">
+        <input type="file" accept="video/*,.wmv,.avi,.mkv,.flv" aria-label="Video file">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+        <span class="drop-title">Drag and drop your video here, or <u>browse</u></span>
+        <span class="drop-name">Best for files under 500 MB</span>
+      </label>
+      <label class="field">Compression level
+        <select id="level">
+          <option value="light">Light – original size, slightly smaller</option>
+          <option value="balanced" selected>Balanced – up to 720p</option>
+          <option value="strong">Strong – up to 480p, smallest file</option>
+        </select>
+      </label>
+      <button class="go">Compress video</button>
+      <progress max="1" value="0" hidden></progress>
+      <p class="status" role="status"></p>
+      <div class="out"></div>
+    </section>
+
+    <section id="ocr" class="panel card" hidden>
+      <h2>Image to text</h2>
+      <p class="sub">Pick an image or paste a screenshot with Ctrl+V</p>
+      <label class="drop">
+        <input type="file" id="ocrFile" accept="image/*" aria-label="Image file">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+        <span class="drop-title">Drag and drop your image here, or <u>browse</u></span>
+        <span class="drop-name">PNG, JPG or WEBP</span>
+      </label>
+      <img id="ocrPreview" alt="Selected image preview" hidden>
+      <label class="field">Language
+        <select id="ocrLang">
+          <option value="eng">English</option>
+          <option value="ben">Bangla</option>
+          <option value="ben+eng">Bangla + English</option>
+        </select>
+      </label>
+      <button class="go" id="ocrGo">Extract text</button>
+      <progress max="1" value="0" hidden></progress>
+      <p class="status" role="status"></p>
+      <textarea id="ocrText" rows="9" placeholder="Extracted text appears here" aria-label="Extracted text"></textarea>
+      <button id="ocrCopy" class="secondary">Copy text</button>
+    </section>
+
+    <section id="duty" class="panel card" hidden>
+      <h2>Duty &amp; break time calculator</h2>
+      <p class="sub">Works for night shifts that cross midnight</p>
+      <div class="row3">
+        <label class="field">Duty start<input type="time" id="dStart" value="09:00"></label>
+        <label class="field">Duty end<input type="time" id="dEnd" value="18:00"></label>
+        <label class="field">Standard hours<input type="number" id="dStd" value="8" min="0" max="24" step="0.5"></label>
+      </div>
+      <div id="breaks"></div>
+      <button class="secondary" id="addBreak">Add another break</button>
+      <div class="meters small">
+        <div><span id="dGross">–</span><small>Total duty</small></div>
+        <div><span id="dBreak">–</span><small>Total breaks</small></div>
+        <div><span id="dNet">–</span><small>Net working time</small></div>
+        <div><span id="dOver">–</span><small id="dOverLabel">Overtime</small></div>
+      </div>
+      <p class="status" id="dutyMsg" role="status"></p>
+      <button class="secondary" id="dutyCopy">Copy summary</button>
+    </section>
+
+    <section id="speed" class="panel card" hidden>
+      <h2>Internet speed test</h2>
+      <p class="sub">Measured against the nearest Cloudflare server</p>
+      <dl class="ip">
+        <div><dt>IP address</dt><dd id="ipAddr">…</dd></div>
+        <div><dt>Country</dt><dd id="ipCountry">…</dd></div>
+        <div><dt>ISP</dt><dd id="ipIsp">…</dd></div>
+      </dl>
+      <div class="meters">
+        <div><span id="mDown">–</span><small>Download Mbps</small></div>
+        <div><span id="mUp">–</span><small>Upload Mbps</small></div>
+        <div><span id="mPing">–</span><small>Ping ms</small></div>
+        <div><span id="mJit">–</span><small>Jitter ms</small></div>
+      </div>
+      <button class="go" id="speedGo">Start test</button>
+      <p class="status" role="status" id="speedStatus"></p>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 MediaKit. Built with <a href="https://github.com/ffmpegwasm/ffmpeg.wasm">ffmpeg.wasm</a>, <a href="https://github.com/naptha/tesseract.js">Tesseract.js</a> and Cloudflare speed endpoints.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
